@@ -20,7 +20,7 @@ Everything in this project is fictional but grounded in real-world architecture 
 
 There are 
 
-## 🧭 Reference Architecture and Overview
+## 📐 Reference Architecture and Overview
 
 <p align="center">
   <img src="./assets/Reference_Architecture.png" alt="Reference Architecture Diagram" width="700"/>
@@ -51,6 +51,18 @@ This reference architecture presents a real-world context in which multiple inde
 
 - Lab clinics operating near potential outbreak zones collect opt-in health data from donors. These clinics already manage biosample digitization and local data storage but require secure onboarding into a unified system for integrated analysis alongside wildlife data.
 </details>
+
+## 🧪 Simulation setup, design, AWS Services and implementation
+
+This is a simulation project. The IoT devices, field stations, and lab clinics described do not exist physically. As part of this GitHub deployment, a simulated architecture has been implemented to replicate the data flow and behavior of a real-world wildlife surveillance system. The sections below outline how each component is emulated within the cloud environment.
+
+## IoT Device Simulation Architecture ##
+
+<p align="center">
+  <img src="./assets/IoT_simulation.png" alt="IoT Simulation Diagram" width="700"/>
+</p>
+
+
 
 ---
 
@@ -97,6 +109,10 @@ This reference architecture presents a real-world context in which multiple inde
   - **Analysts can query GPS movement trends, environmental changes, and wildlife health risks.**
   - **Historical & real-time insights support decision-making** for conservationists and epidemiologists.
 </details>
+
+
+
+
 
 ---
 
