@@ -18,11 +18,44 @@ Everything in this project is fictional but grounded in real-world architecture 
 
 **Wildlife Health Surveillance (WHS) Program**, is a fictional program dedicated to monitoring and detecting pathogens affecting wildlife populations, which can potentially spill over to humans, posing a significant public health risk. To facilitate this work, the WHS Program requires a robust and scalable IT solution for the genomic analysis of wildlife samples, storage of genomic sequence data, and sharing of results with various stakeholders, including wildlife health organizations, research institutions, and public health agencies.
 
-## 🧭 Architecture Overview
+There are 
+
+## 🧭 Reference Architecture and Overview
 
 <p align="center">
   <img src="./assets/Reference_Architecture.png" alt="Reference Architecture Diagram" width="700"/>
 </p>
+
+## 📡 Reference Architecture Scenario Overview
+
+This reference architecture presents a real-world context in which multiple independent entities are already collecting valuable data related to wildlife and public health. The primary focus of this project is to build the **WATCHHub** — a centralized ingestion and coordination platform that enables secure, scalable, and unified access to data streams across all these sources.
+
+<details>
+<summary>**1️⃣ Existing IoT Devices**</summary>
+
+- IoT sensors such as GPS collars, environmental monitors, health trackers, and camera traps are already deployed in the field and maintained by third-party contractors. These devices transmit telemetry data via satellite and are available for integration with centralized infrastructure.
+</details>
+
+<details>
+<summary>**2️⃣ Field Scientists & Mobile Data Collection**</summary>
+
+- Field workers actively collect wildlife samples during on-site research. A **React-based mobile application**, equipped with offline storage, allows them to digitize metadata and field observations, which are later synced to the cloud.
+</details>
+
+<details>
+<summary>**3️⃣ WATCHHub (Project Focus)**</summary>
+
+- The core focus of this project is to build the **Wildlife Analysis and Technology Center for Health Hub (WATCHHub)** — a cloud-native ingestion platform that centralizes data from all external sources. WATCHHub standardizes data, enforces security and compliance, and provides shared access for stakeholders such as researchers, public health officials, and partner organizations. It is designed to support workshops and collaboration across technical and non-technical teams.
+</details>
+
+<details>
+<summary>**4️⃣ Lab Clinics & Human Health Data**</summary>
+
+- Lab clinics operating near potential outbreak zones collect opt-in health data from donors. These clinics already manage biosample digitization and local data storage but require secure onboarding into a unified system for integrated analysis alongside wildlife data.
+</details>
+
+
+
 
 
 ---
