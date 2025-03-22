@@ -62,6 +62,8 @@ This is a simulation project. The IoT devices, field stations, and lab clinics d
   <img src="./assets/IoT_simulation.png" alt="IoT Simulation Diagram" width="700"/>
 </p>
 
+In a real-world deployment, IoT devices like GPS collars, environmental sensors, health monitors, and camera traps would transmit telemetry data via satellite uplink to a centralized cloud ingestion system. In this simulation, the same behavior is emulated using **containerized Python programs**, each representing a specific device type. These containers are deployed on **AWS ECS Fargate**, pulling from distinct **Amazon ECR repositories**, and continuously generating **JSON payloads** that mimic real sensor output. These messages are then published via **MQTT**, simulating how edge devices would stream data to **AWS IoT Core** in production.
+
 
 
 ---
