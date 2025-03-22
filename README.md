@@ -33,36 +33,36 @@ This reference architecture presents a real-world context in which multiple inde
 <details>
 <summary>**1️⃣ Existing IoT Devices**</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;IoT sensors such as GPS collars, environmental monitors, health trackers, and camera traps are already deployed in the field and maintained by third-party contractors. These devices transmit telemetry data via satellite and are available for integration with centralized infrastructure.
+- IoT sensors such as GPS collars, environmental monitors, health trackers, and camera traps are already deployed in the field.  
+- These devices are managed by third-party contractors.  
+- Data is transmitted via satellite to cloud endpoints and is available for integration into WATCHHub.
 </details>
 
 <details>
 <summary>**2️⃣ Field Scientists & Mobile Data Collection**</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;Field workers actively collect wildlife samples during on-site research. A **React-based mobile application**, equipped with offline storage, allows them to digitize metadata and field observations, which are later synced to the cloud.
+- Field workers collect wildlife samples during field expeditions.  
+- A **React-based mobile app** with offline storage allows scientists to digitize observations and sample data.  
+- Data is later synced to the cloud once connectivity is restored.
 </details>
 
 <details>
 <summary>**3️⃣ WATCHHub (Project Focus)**</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;The core focus of this project is to build the **Wildlife Analysis and Technology Center for Health Hub (WATCHHub)** — a cloud-native ingestion platform that centralizes data from all external sources. WATCHHub standardizes data, enforces security and compliance, and provides shared access for stakeholders such as researchers, public health officials, and partner organizations. It is designed to support workshops and collaboration across technical and non-technical teams.
+- The core project involves building the **WATCHHub**, a centralized cloud-native ingestion and coordination platform.  
+- WATCHHub will aggregate, normalize, and secure data from all upstream sources.  
+- It will streamline onboarding for external partners and enable shared access to stakeholders including researchers, public health agencies, and engineers.  
+- The architecture is designed for cross-functional communication—supporting both technical and executive-level engagement.
 </details>
 
 <details>
 <summary>**4️⃣ Lab Clinics & Human Health Data**</summary>
 
-&nbsp;&nbsp;&nbsp;&nbsp;Lab clinics operating near potential outbreak zones collect opt-in health data from donors. These clinics already manage biosample digitization and local data storage but require secure onboarding into a unified system for integrated analysis alongside wildlife data.
+- Lab clinics located near outbreak regions collect voluntary health data from human donors.  
+- These clinics already support **biosample digitization and local storage**.  
+- WATCHHub will provide the infrastructure to securely onboard and integrate this data into the broader surveillance network.
 </details>
 
-
-The core focus of this project is to build the **Wildlife Analysis and Technology Center for Health Hub (WATCHHub)** — a cloud-native ingestion platform that centralizes data from all external sources. WATCHHub standardizes data, enforces security and compliance, and provides shared access for stakeholders such as researchers, public health officials, and partner organizations. It is designed to support workshops and collaboration across technical and non-technical teams.
-</details>
-
-<details>
-<summary>4️⃣ Lab Clinics & Human Health Data</summary>
-
-Lab clinics operating near potential outbreak zones collect opt-in health data from donors. These clinics already manage biosample digitization and local data storage but require secure onboarding into a unified system for integrated analysis alongside wildlife data.
-</details>
 
 
 
