@@ -62,9 +62,14 @@ This is a simulation project. The IoT devices, field stations, and lab clinics d
   <img src="./assets/IoT_simulation.png" alt="IoT Simulation Diagram" width="700"/>
 </p>
 
-In a real-world deployment, IoT devices like GPS collars, environmental sensors, health monitors, and camera traps would transmit telemetry data via satellite uplink to a centralized cloud ingestion system. In this simulation, the same behavior is emulated using **containerized Python programs**, each representing a specific device type. These containers are deployed on **AWS ECS Fargate**, pulling from distinct **Amazon ECR repositories**, and continuously generating **JSON payloads** that mimic real sensor output. These messages are then published via **MQTT**, simulating how edge devices would stream data to **AWS IoT Core** in production.
+In the real world, IoT devices would transmit telemetry data via satellite to a centralized platform. This simulation replicates that process using the following AWS services and components:
 
-
+- **Amazon ECR**: Hosts container images for each simulated IoT device (e.g., GPS collars, environmental sensors), each containing a Python script.
+- **Amazon ECS**: Orchestrates the deployment of containers by defining task configurations for each device type.
+- **AWS Fargate**: Runs the ECS tasks as serverless containers, allowing each simulated device to execute independently without managing infrastructure.
+- **JSON Payloads**: Python scripts inside each container generate structured JSON telemetry data that mimics real-world IoT device output.
+- **MQTT Protocol**: Simulated telemetry is streamed using the MQTT protocol, replicating how real devices transmit data over low-bandwidth networks.
+- **AWS IoT Core (Downstream Hub)**: Acts as the simulated cloud ingestion point where data would be routed in a production setting for processing, storage, and analysis.
 
 ---
 
