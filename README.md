@@ -62,7 +62,7 @@ This is a simulation project. The IoT devices, field stations, and lab clinics d
   <img src="./assets/IoT_simulation.png" alt="IoT Simulation Diagram" width="700"/>
 </p>
 
-In the real world, IoT devices would transmit telemetry data via satellite to a centralized platform. This simulation replicates that process using the following AWS services and components:
+In the real world, IoT devices would transmit telemetry data via satellite to a centralized platform. This simulation replicates that process using the following AWS services and components founr in the `EcrStack` and `EcsStack`:
 
 - **Amazon ECR**: Hosts container images for each simulated IoT device (e.g., GPS collars, environmental sensors), each containing a Python script.
 - **Amazon ECS**: Orchestrates the deployment of containers by defining task configurations for each device type.
