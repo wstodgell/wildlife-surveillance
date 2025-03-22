@@ -29,7 +29,7 @@ There are
 This reference architecture presents a real-world context in which multiple independent entities are already collecting valuable data related to wildlife and public health. The primary focus of this project is to build the **WATCHHub** — a centralized ingestion and coordination platform that enables secure, scalable, and unified access to data streams across all these sources.
 
 <details>
-<summary>1️⃣ Existing IoT Devices</summary>
+<summary>1️⃣ **Existing IoT Devices**</summary>
 
 IoT sensors such as GPS collars, environmental monitors, health trackers, and camera traps are already deployed in the field and maintained by third-party contractors. These devices transmit telemetry data via satellite and are available for integration with centralized infrastructure.
 </details>
