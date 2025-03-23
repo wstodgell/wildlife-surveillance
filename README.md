@@ -56,6 +56,10 @@ This reference architecture presents a real-world context in which multiple inde
 
 This is a simulation project. The IoT devices, field stations, and lab clinics described do not exist physically. As part of this GitHub deployment, a simulated architecture has been implemented to replicate the data flow and behavior of a real-world wildlife surveillance system. The sections below outline how each component is emulated within the cloud environment.
 
+<p align="center">
+  <img src="./assets/Wildlife Health Surveillance Cloud Solution - GitHub Artifacts.png" alt="IoT Simulation Diagram" width="700"/>
+</p>
+
 ## 1 IoT Device Simulation Architecture ##
 
 <p align="center">
