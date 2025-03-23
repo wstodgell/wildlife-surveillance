@@ -75,10 +75,6 @@ In the real world, IoT devices would transmit telemetry data via satellite to a 
 - **MQTT Protocol**: Simulated telemetry is streamed using the MQTT protocol, replicating how real devices transmit data over low-bandwidth networks.
 - **AWS IoT Core (Downstream Hub)**: Acts as the simulated cloud ingestion point where data would be routed in a production setting for processing, storage, and analysis.
 
-
-<p align="center">
-  <img src="./assets/iot_pipeline.png" alt="IoT Data Pipeline" width="700"/>
-</p>
 ---
 
 ## 🧪 Key Use Cases Identified from Architecture
@@ -125,13 +121,7 @@ In the real world, IoT devices would transmit telemetry data via satellite to a 
   - **Historical & real-time insights support decision-making** for conservationists and epidemiologists.
 </details>
 
-
-
-
-
 ---
-
-## ⚙️ AWS Architecture (via CDK)
 
 ## ⚙️ AWS Architecture (via CDK)
 
