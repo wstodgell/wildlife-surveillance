@@ -23,14 +23,6 @@ jobs:
       - name: Print current working directory
         run: pwd
 
-        # Set up AWS credentials using GitHub Secrets
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 # You can replace this with your desired region
-
       # Print the AWS account ID to verify connection
       - name: Verify AWS Connection (Print AWS Account ID)
         run: |
@@ -101,6 +93,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsAdminRole
           aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubOIDCSess
 
       # Step to Bootstrap the CDK environment
       - name: Bootstrap CDK Environment
