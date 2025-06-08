@@ -45,11 +45,11 @@ jobs:
           cd CDK
           npx cdk deploy AuthStack --require-approval never
 
-      - name: Deploy Amplify Stack
-        run: |
-          echo "Deploying Amplify Stack..."
-          cd CDK
-          npx cdk deploy AmplifyStack --require-approval never
+      #- name: Deploy Amplify Stack
+      #  run: |
+      #   echo "Deploying Amplify Stack..."
+      #    cd CDK
+      #    npx cdk deploy AmplifyStack --require-approval never
 
       - name: Deploy Data Ingestion Stack
         run: |
