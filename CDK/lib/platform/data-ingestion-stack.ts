@@ -127,7 +127,12 @@ export class DataIngestionStack extends cdk.Stack {
     createGlueJob(this, lambdaDynamoDBAccessRole, etlScriptBucketName, glueTempS3BucketName, dynamoDbS3ResultsBucketName, 'etl_HEAtoDb.py', 'hea');
 
     /* File upload Stack for field workers */
+      const unzipLambda = new lambda.Function(this, 'UnzipLambda', {
+        runtime: lambda.Runtime.PYTHON_3_9,
+        handler: 'unzip_and_store.lambda_handler',
+        code: lambda.Code.fromAsset('lib/platform/lambdas'),
 
+      });
 
       // Bucket for raw ZIP uploads
       const rawUploadsBucket = new s3.Bucket(this, 'RawUploadsBucket', {
@@ -141,13 +146,6 @@ export class DataIngestionStack extends cdk.Stack {
           bucketName: 'lab-processed-images',
           removalPolicy: cdk.RemovalPolicy.DESTROY,  // Automatically delete the bucket with the stack
           autoDeleteObjects: true  // Automatically delete objects when the bucket is deleted
-      });
-
-      const unzipLambda = new lambda.Function(this, 'UnzipLambda', {
-        runtime: lambda.Runtime.PYTHON_3_9,
-        handler: 'unzip_and_store.lambda_handler',
-        code: lambda.Code.fromAsset('lib/platform/lambdas'),
-
       });
     
       rawUploadsBucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.LambdaDestination(unzipLambda));
