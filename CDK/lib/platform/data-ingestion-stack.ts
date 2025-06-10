@@ -136,7 +136,7 @@ export class DataIngestionStack extends cdk.Stack {
 
       // Bucket for raw ZIP uploads
       const rawUploadsBucket = new s3.Bucket(this, 'RawUploadsBucket', {
-          bucketName: 'lab-sample-uploads',
+          bucketName: `lab-sample-uploads-${this.account}-${this.region}`.toLowerCase(),
           removalPolicy: cdk.RemovalPolicy.DESTROY,  // Automatically delete the bucket with the stack
           autoDeleteObjects: true  // Automatically delete objects when the bucket is deleted
       });
@@ -147,8 +147,25 @@ export class DataIngestionStack extends cdk.Stack {
           removalPolicy: cdk.RemovalPolicy.DESTROY,  // Automatically delete the bucket with the stack
           autoDeleteObjects: true  // Automatically delete objects when the bucket is deleted
       });
-    
-      rawUploadsBucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.LambdaDestination(unzipLambda));
 
+      // Grant S3 permission to invoke Lambda
+      new lambda.CfnPermission(this, 'AllowS3InvokeLambda', {
+        action: 'lambda:InvokeFunction',
+        functionName: unzipLambda.functionName,
+        principal: 's3.amazonaws.com',
+        sourceArn: rawUploadsBucket.bucketArn,
+      });
+
+      // Manually add notification configuration
+      const rawBucket = rawUploadsBucket.node.defaultChild as s3.CfnBucket;
+    
+      rawBucket.notificationConfiguration = {
+      lambdaConfigurations: [
+        {
+          event: 's3:ObjectCreated:*',
+          function: unzipLambda.functionArn,
+        },
+        ],
+      };
   }
 }
