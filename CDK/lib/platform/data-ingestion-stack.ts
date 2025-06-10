@@ -13,6 +13,7 @@ import * as glue from 'aws-cdk-lib/aws-glue';
 import * as s3Deployment from 'aws-cdk-lib/aws-s3-deployment'; // Import S3 Deployment
 import { createGlueJob } from './helpers/glue-job-factory'; // Import the factory function
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+import * as cr from 'aws-cdk-lib/custom-resources';
 //import { checkFileExists } from './helpers/check-glue'; // Import the factory function
 
 export class DataIngestionStack extends cdk.Stack {
@@ -148,24 +149,37 @@ export class DataIngestionStack extends cdk.Stack {
           autoDeleteObjects: true  // Automatically delete objects when the bucket is deleted
       });
 
-      // Grant S3 permission to invoke Lambda
-      new lambda.CfnPermission(this, 'AllowS3InvokeLambda', {
-        action: 'lambda:InvokeFunction',
-        functionName: unzipLambda.functionName,
-        principal: 's3.amazonaws.com',
+      // Grant S3 permission to invoke the Lambda
+      unzipLambda.addPermission('S3InvokePermission', {
+        principal: new iam.ServicePrincipal('s3.amazonaws.com'),
         sourceArn: rawUploadsBucket.bucketArn,
       });
 
-      // Manually add notification configuration
-      const rawBucket = rawUploadsBucket.node.defaultChild as s3.CfnBucket;
-    
-      rawBucket.notificationConfiguration = {
-      lambdaConfigurations: [
-        {
-          event: 's3:ObjectCreated:*',
-          function: unzipLambda.functionArn,
+      // Custom Resource to register notification
+      const s3NotificationCustomResource = new cr.AwsCustomResource(this, 'AddS3Notification', {
+        onCreate: {
+          service: 'S3',
+          action: 'putBucketNotificationConfiguration',
+          parameters: {
+            Bucket: rawUploadsBucket.bucketName,
+            NotificationConfiguration: {
+              LambdaFunctionConfigurations: [
+                {
+                  Events: ['s3:ObjectCreated:*'],
+                  LambdaFunctionArn: unzipLambda.functionArn,
+                },
+              ],
+            },
+          },
+          physicalResourceId: cr.PhysicalResourceId.of('RawBucketNotificationConfig'),
         },
-        ],
-      };
+        policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
+          resources: [rawUploadsBucket.bucketArn],
+        }),
+      });
+
+      // Ensure ordering
+      s3NotificationCustomResource.node.addDependency(rawUploadsBucket);
+      s3NotificationCustomResource.node.addDependency(unzipLambda);
   }
 }
