@@ -13,7 +13,6 @@ import * as glue from 'aws-cdk-lib/aws-glue';
 import * as s3Deployment from 'aws-cdk-lib/aws-s3-deployment'; // Import S3 Deployment
 import { createGlueJob } from './helpers/glue-job-factory'; // Import the factory function
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
-import * as cr from 'aws-cdk-lib/custom-resources';
 //import { checkFileExists } from './helpers/check-glue'; // Import the factory function
 
 export class DataIngestionStack extends cdk.Stack {
@@ -128,12 +127,6 @@ export class DataIngestionStack extends cdk.Stack {
     createGlueJob(this, lambdaDynamoDBAccessRole, etlScriptBucketName, glueTempS3BucketName, dynamoDbS3ResultsBucketName, 'etl_HEAtoDb.py', 'hea');
 
     /* File upload Stack for field workers */
-      const unzipLambda = new lambda.Function(this, 'UnzipLambda', {
-        runtime: lambda.Runtime.PYTHON_3_9,
-        handler: 'unzip_and_store.lambda_handler',
-        code: lambda.Code.fromAsset('lib/platform/lambdas'),
-
-      });
 
       // Bucket for raw ZIP uploads
       const rawUploadsBucket = new s3.Bucket(this, 'RawUploadsBucket', {
@@ -149,37 +142,14 @@ export class DataIngestionStack extends cdk.Stack {
           autoDeleteObjects: true  // Automatically delete objects when the bucket is deleted
       });
 
-      // Grant S3 permission to invoke the Lambda
-      unzipLambda.addPermission('S3InvokePermission', {
-        principal: new iam.ServicePrincipal('s3.amazonaws.com'),
-        sourceArn: rawUploadsBucket.bucketArn,
-      });
+      const unzipLambda = new lambda.Function(this, 'UnzipLambda', {
+        runtime: lambda.Runtime.PYTHON_3_9,
+        handler: 'unzip_and_store.lambda_handler',
+        code: lambda.Code.fromAsset('lib/platform/lambdas'),
 
-      // Custom Resource to register notification
-      const s3NotificationCustomResource = new cr.AwsCustomResource(this, 'AddS3Notification', {
-        onCreate: {
-          service: 'S3',
-          action: 'putBucketNotificationConfiguration',
-          parameters: {
-            Bucket: rawUploadsBucket.bucketName,
-            NotificationConfiguration: {
-              LambdaFunctionConfigurations: [
-                {
-                  Events: ['s3:ObjectCreated:*'],
-                  LambdaFunctionArn: unzipLambda.functionArn,
-                },
-              ],
-            },
-          },
-          physicalResourceId: cr.PhysicalResourceId.of('RawBucketNotificationConfig'),
-        },
-        policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
-          resources: [rawUploadsBucket.bucketArn],
-        }),
       });
+    
+      rawUploadsBucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.LambdaDestination(unzipLambda));
 
-      // Ensure ordering
-      s3NotificationCustomResource.node.addDependency(rawUploadsBucket);
-      s3NotificationCustomResource.node.addDependency(unzipLambda);
   }
 }
