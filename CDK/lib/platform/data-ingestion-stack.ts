@@ -128,6 +128,13 @@ export class DataIngestionStack extends cdk.Stack {
 
     /* File upload Stack for field workers */
 
+      // Bucket for extracted images
+      const processedImagesBucket = new s3.Bucket(this, 'ProcessedImagesBucket', {
+          bucketName: `lab-processed-images-${this.account}-${this.region}`.toLowerCase(),
+          removalPolicy: cdk.RemovalPolicy.DESTROY,  // Automatically delete the bucket with the stack
+          autoDeleteObjects: true  // Automatically delete objects when the bucket is deleted
+      });
+
       // Bucket for raw ZIP uploads
       const rawUploadsBucket = new s3.Bucket(this, 'RawUploadsBucket', {
           bucketName: `lab-sample-uploads-${this.account}-${this.region}`.toLowerCase(),
@@ -135,18 +142,21 @@ export class DataIngestionStack extends cdk.Stack {
           autoDeleteObjects: true  // Automatically delete objects when the bucket is deleted
       });
 
-      // Bucket for extracted images
-      const processedImagesBucket = new s3.Bucket(this, 'ProcessedImagesBucket', {
-          bucketName: 'lab-processed-images',
-          removalPolicy: cdk.RemovalPolicy.DESTROY,  // Automatically delete the bucket with the stack
-          autoDeleteObjects: true  // Automatically delete objects when the bucket is deleted
-      });
-
+      
+      // Lambda function to unzip and upload to processedImagesBucket
       const unzipLambda = new lambda.Function(this, 'UnzipLambda', {
         runtime: lambda.Runtime.PYTHON_3_9,
         handler: 'unzip_and_store.lambda_handler',
         code: lambda.Code.fromAsset('lib/platform/lambdas'),
+        environment: {
+          S3_BUCKET_NAME: processedImagesBucket.bucketName
+        }
+      });
 
+      // Add permission for S3 to invoke Lambda
+      unzipLambda.addPermission('AllowS3Invoke', {
+        principal: new iam.ServicePrincipal('s3.amazonaws.com'),
+        sourceArn: rawUploadsBucket.bucketArn,
       });
     
       rawUploadsBucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.LambdaDestination(unzipLambda));
