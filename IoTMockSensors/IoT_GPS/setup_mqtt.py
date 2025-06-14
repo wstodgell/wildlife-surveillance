@@ -1,3 +1,16 @@
+"""
+setup_mqtt.py
+
+Establishes a secure MQTT connection to AWS IoT Core using device certificates and credentials
+retrieved from AWS Secrets Manager. Also provides utilities to log messages to CloudWatch Logs.
+
+Key Features:
+- Downloads the Amazon Root CA certificate
+- Retrieves private key and certificate from Secrets Manager
+- Establishes an MQTT connection using AWSIoTPythonSDK
+- Logs connection and publish events to CloudWatch Logs
+"""
+
 import boto3
 import time
 import json
@@ -18,6 +31,10 @@ logs_client = boto3.client('logs', region_name='us-east-1')
 
 # Function to log errors to CloudWatch and create log group/stream if they don't exist
 def log_to_cloudwatch(message):
+    """
+    Logs a message to AWS CloudWatch Logs. Automatically creates the log group and stream
+    if they do not exist.
+    """
     try:
         # Ensure the log group exists
         logs_client.create_log_group(logGroupName=configuration.LOG_GROUP)
@@ -68,7 +85,11 @@ def log_to_cloudwatch(message):
 
 # Function to download the Root CA certificate
 def download_root_ca():
+    """
+    Downloads the Amazon Root CA certificate required for establishing TLS MQTT connections.
+    """
     try:
+        # sends an HTTP GET request to Amazon's trust repository and retrieves the AmazonRootCA1.pem file.
         url = "https://www.amazontrust.com/repository/AmazonRootCA1.pem"
         response = requests.get(url)
 
@@ -83,6 +104,9 @@ def download_root_ca():
 
 # Function to retrieve the IoT Endpoint from AWS IoT Core
 def get_iot_endpoint():
+    """
+    Retrieves the AWS IoT Core Data endpoint for the account/region.
+    """
     try:
         client = boto3.client('iot', region_name='us-east-1')
         response = client.describe_endpoint(endpointType='iot:Data-ATS')
@@ -93,6 +117,9 @@ def get_iot_endpoint():
 
 # Function to retrieve IoT certificates from AWS Secrets Manager (utilizes the IoTTaskRole ex: gpsTaskRole)
 def get_secret():
+    """
+    Retrieves IoT device certificate and private key from AWS Secrets Manager.
+    """
     secret_name = configuration.CERT_SECRET_NAME #not best practice, you shouldn't hardcore secret names
     region_name = "us-east-1"
 
@@ -107,6 +134,15 @@ def get_secret():
 
 # Function to parse the secret string into private key and certificate
 def parse_secret(secret_string):
+    """
+    Parses a combined PEM secret string into its certificate and private key components.
+
+    Parameters:
+        secret_string (str): The combined PEM string.
+
+    Returns:
+        tuple: (private_key, certificate)
+    """
     private_key_start = secret_string.find("-----BEGIN RSA PRIVATE KEY-----")
     private_key_end = secret_string.find("-----END RSA PRIVATE KEY-----") + len("-----END RSA PRIVATE KEY-----")
     private_key = secret_string[private_key_start:private_key_end]
@@ -119,6 +155,16 @@ def parse_secret(secret_string):
 
 # Function to write content (certificates/keys) to a temporary file
 def write_to_temp_file(content, filename_prefix):
+    """
+    Writes PEM content (certificate or private key) to a temporary file.
+
+    Parameters:
+        content (str): PEM-formatted string content.
+        filename_prefix (str): Prefix to use for the filename.
+
+    Returns:
+        str: Path to the written temporary file.
+    """
     temp_file_path = f"./{filename_prefix}.pem"
     with open(temp_file_path, 'w') as f:
         f.write(content)
@@ -126,6 +172,12 @@ def write_to_temp_file(content, filename_prefix):
 
 # Function to establish MQTT connection
 def mqtt_connect():
+    """
+    Establishes a secure MQTT connection to AWS IoT Core using X.509 certificates.
+
+    Returns:
+        AWSIoTMQTTClient: An initialized and connected MQTT client.
+    """
     try:
         # Download Root CA
         root_ca = download_root_ca()

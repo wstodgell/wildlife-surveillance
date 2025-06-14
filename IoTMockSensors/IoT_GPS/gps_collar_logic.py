@@ -1,10 +1,14 @@
+"""
+gps_collar_logic.py
+
+Simulates elk GPS collar behavior:
+- Initializes 8 elk in random positions within specific 'circle'.
+- Updates elk positions with pseudo-random meandering toward a fixed destination
+"""
+
 import random
 import math
 
-#Summary: Initializes 8 elk in random positions within specific 'circle'.
-#   update_elk_positions will move the elk in a random faions (longitude wise) but to the east (latitude wise)
-
-# Constants
 NUM_ELKS = 8  # Number of elk
 RADIUS = 0.025  # Roughly 1 km in latitude/longitude degrees
 
@@ -20,8 +24,8 @@ for _ in range(NUM_ELKS):
   initial_lon = start_lon + delta_lon
   elk_positions.append([initial_lat, initial_lon])
 
-# Function to update elk positions
 def update_elk_positions():
+  """Update elk positions simulating random movement toward a fixed destination."""
   for i, (lat, lon) in enumerate(elk_positions):
     # Move each elk towards a final point, adding randomness for a meandering path
     end_lat, end_lon = 53.2, -128.0  # Central ending point

@@ -32,7 +32,7 @@ def lambda_handler(event, context):
                 # Store each elk's data in DynamoDB
                 table.put_item(
                     Item={
-                        'ElkId': str(elk_id),  # Store elk_id as string
+                        'SensorId': str(elk_id),  # Store elk_id as SensorId since that's what the dynamodDb requires string
                         'Topic': topic,
                         'Timestamp': str(timestamp),
                         'Latitude': lat,

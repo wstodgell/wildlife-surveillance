@@ -1,3 +1,13 @@
+"""
+gps_transmitter.py
+
+This module simulates a GPS IoT Thing that:
+- Generates mock elk location data
+- Publishes messages to AWS IoT Core using MQTT
+- Fetches configuration from AWS SSM and Secrets Manager
+- Logs activity and errors to CloudWatch Logs
+"""
+
 import json
 import logging
 import time
@@ -14,10 +24,12 @@ import traceback
 logging.basicConfig(level=logging.INFO)
 
 def log_error_with_traceback(e):
+  """Log exception with traceback to console and optionally CloudWatch."""
   logging.error(f"Exception: {str(e)}")
   logging.error(traceback.format_exc())
 
 def publish_message(mqtt_client):
+  """Construct and publish a GPS message to AWS IoT Core."""
   try:
     print(f"{Fore.YELLOW}Attempting to Publish Message{Style.RESET_ALL}")
 
@@ -43,9 +55,8 @@ def publish_message(mqtt_client):
     log_error_with_traceback(e)
     raise
 
-
-# Function to attempt preamble setup and connection
 def attempt_preamble_setup():
+    """Attempt to connect to AWS IoT Core until successful."""
     while True:
         try:
             logging.info("Attempting to connect to AWS IoT Core...")
