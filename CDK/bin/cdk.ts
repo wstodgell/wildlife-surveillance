@@ -11,6 +11,7 @@ import { ConfigurationStack } from '../lib/configuration-stack';
 import { DataAnalyticsStack } from '../lib/platform/data-analytics-stack';
 import { AuthStack } from '../lib/platform/auth-stack';
 import { AmplifyStack } from '../lib/platform/amplify-stack';
+import { EtlOrchestrationStack } from '../lib/platform/etl-orchestration-stack';
 
 const app = new cdk.App();
 
@@ -48,6 +49,10 @@ new AuthStack(app, 'AuthStack', {
 });
 
 new AmplifyStack(app, 'AmplifyStack', {
+  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+});
+
+new EtlOrchestrationStack(app, 'EtlOrchestrationStack', {
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
 });
 
