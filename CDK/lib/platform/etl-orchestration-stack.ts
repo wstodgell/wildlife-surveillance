@@ -8,7 +8,7 @@ export class EtlOrchestrationStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const lambdaPath = path.join(__dirname, 'platform/lambdas/etl_orchestration');
+    const lambdaPath = 'lib/platform/lambdas/etl_orchestration';
 
     const lambdaRole = new iam.Role(this, 'LambdaGlueRole', {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -19,31 +19,31 @@ export class EtlOrchestrationStack extends cdk.Stack {
     });
 
     const startCrawlerFn = new lambda.Function(this, 'StartCrawlerFn', {
-    runtime: lambda.Runtime.PYTHON_3_11,
-    handler: 'start_crawler.handler',
-    code: lambda.Code.fromAsset(lambdaPath),
-    role: lambdaRole,
+        runtime: lambda.Runtime.PYTHON_3_11,
+        handler: 'start_crawler.handler',
+        code: lambda.Code.fromAsset(lambdaPath),
+        role: lambdaRole,
     });
 
     const waitCrawlerFn = new lambda.Function(this, 'WaitCrawlerFn', {
-    runtime: lambda.Runtime.PYTHON_3_11,
-    handler: 'wait_for_crawler.handler',
-    code: lambda.Code.fromAsset(lambdaPath),
-    role: lambdaRole,
+        runtime: lambda.Runtime.PYTHON_3_11,
+        handler: 'wait_for_crawler.handler',
+        code: lambda.Code.fromAsset(lambdaPath),
+        role: lambdaRole,
     });
 
     const startJobFn = new lambda.Function(this, 'StartJobFn', {
-    runtime: lambda.Runtime.PYTHON_3_11,
-    handler: 'start_job.handler',
-    code: lambda.Code.fromAsset(lambdaPath),
-    role: lambdaRole,
+        runtime: lambda.Runtime.PYTHON_3_11,
+        handler: 'start_job.handler',
+        code: lambda.Code.fromAsset(lambdaPath),
+        role: lambdaRole,
     });
 
     const waitJobFn = new lambda.Function(this, 'WaitJobFn', {
-    runtime: lambda.Runtime.PYTHON_3_11,
-    handler: 'wait_for_job.handler',
-    code: lambda.Code.fromAsset(lambdaPath),
-    role: lambdaRole,
+        runtime: lambda.Runtime.PYTHON_3_11,
+        handler: 'wait_for_job.handler',
+        code: lambda.Code.fromAsset(lambdaPath),
+        role: lambdaRole,
     });
 
 
