@@ -3,7 +3,7 @@ import math
 
 # Constants for environment simulation
 NUM_SENSORS = 10  # Adjust the number of sensors as needed
-RADIUS = 0.1  # Diameter for sensor coverage in degrees, approx 5 km
+RADIUS = 20  # Diameter for sensor coverage in degrees, approx 5 km
 
 # Initialize sensor positions with random starting points
 sensor_positions = []
