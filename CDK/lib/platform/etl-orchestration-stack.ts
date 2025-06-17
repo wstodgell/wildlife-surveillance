@@ -13,10 +13,24 @@ export class EtlOrchestrationStack extends cdk.Stack {
     const lambdaRole = new iam.Role(this, 'LambdaGlueRole', {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
     managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-        iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonGlueFullAccess'),
-        ]
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')
+    ]
     });
+
+    lambdaRole.addToPolicy(new iam.PolicyStatement({
+    actions: [
+        'glue:StartCrawler',
+        'glue:GetCrawler',
+        'glue:GetCrawlerMetrics',
+        'glue:StartJobRun',
+        'glue:GetJobRun',
+        'logs:CreateLogGroup',
+        'logs:CreateLogStream',
+        'logs:PutLogEvents'
+    ],
+  resources: ['*'] // You can restrict this later
+}));
+
 
     const startCrawlerFn = new lambda.Function(this, 'StartCrawlerFn', {
         runtime: lambda.Runtime.PYTHON_3_11,
