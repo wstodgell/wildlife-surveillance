@@ -9,9 +9,9 @@ export class DataAnalyticsStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const bucketName = cdk.Fn.importValue('DynamoDbBucketName'); // Use the exportName from DataIngestionStack
+    const bucketName = cdk.Fn.importValue('JSONDynamoDbBucketName'); // Get bucket that stores JSON files from Glue ETL
 
-    const s3OutputBucket = s3.Bucket.fromBucketName(this, 'OutputBucket', bucketName);
+    const s3JSONBucket = s3.Bucket.fromBucketName(this, 'OutputBucket', bucketName);
 
 
     // IAM Role for Glue Crawler
@@ -20,7 +20,7 @@ export class DataAnalyticsStack extends Stack {
     });
 
     // Grant necessary permissions to the Glue Crawler Role
-    s3OutputBucket.grantRead(glueCrawlerRole);
+    s3JSONBucket.grantRead(glueCrawlerRole);
     glueCrawlerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSGlueServiceRole'));
 
     // Glue Database for the crawler
@@ -37,10 +37,10 @@ export class DataAnalyticsStack extends Stack {
         targets: {
           s3Targets: [
             {
-              path: `s3://${s3OutputBucket.bucketName}/gps_data/`, // Point to the gps_data folder
+              path: `s3://${s3JSONBucket.bucketName}/gps_data/`, // Point to the gps_data folder where JSON files are located
             },
             {
-              path: `s3://${s3OutputBucket.bucketName}/env_data/`, // Point to the env_data folder
+              path: `s3://${s3JSONBucket.bucketName}/env_data/`, // Point to the env_data folder where JSON files are located
             },
           ],
         },

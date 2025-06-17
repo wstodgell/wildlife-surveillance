@@ -92,10 +92,10 @@ export class DataIngestionStack extends cdk.Stack {
       value: athenaResultsBucket.bucketName,
     });
 
-    // Output the DynamoDbBucketName Parquet files are put here from Glue Job
+    // Output the DynamoDbBucketName JSON files are put here from Glue Job
     new cdk.CfnOutput(this, 'DynamoDbBucketNameOutput', {
       value: s3BucketDynamoDb.bucketName,
-      exportName: 'DynamoDbBucketName',
+      exportName: 'JSONDynamoDbBucketName',
     });
 
     // Output the bucket name

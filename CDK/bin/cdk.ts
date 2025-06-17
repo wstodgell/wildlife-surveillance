@@ -52,10 +52,11 @@ new AmplifyStack(app, 'AmplifyStack', {
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
 });
 
+/*
 new EtlOrchestrationStack(app, 'EtlOrchestrationStack', {
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
 });
-
+*/
 /*
 new ClinicIngestionStack(app, 'ClinicIngestionStack', {
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
