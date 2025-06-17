@@ -63,11 +63,11 @@ jobs:
           cd CDK
           npx cdk deploy DataAnalyticsStack --require-approval never
 
-      - name: Deploy ETL Orchestration Stack
-        run: |
-          echo "Deploying ETL Orchestration Stack..."
-          cd CDK
-          npx cdk deploy EtlOrchestrationStack --require-approval never
+      #- name: Deploy ETL Orchestration Stack
+      #  run: |
+      #    echo "Deploying ETL Orchestration Stack..."
+      #    cd CDK
+      #   npx cdk deploy EtlOrchestrationStack --require-approval never
 
       # Step to get the outputs of the CDK stack
       - name: Get CDK Stack Outputs
