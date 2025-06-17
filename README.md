@@ -77,7 +77,7 @@ In the real world, IoT devices would transmit telemetry data via satellite to a 
 
 ---
 
-## 🧪 Key Use Cases Identified from Architecture
+## 🧪 Architecture Supports Key Use Cases
 
 <details>
   <summary>1️⃣ IoT-Based Wildlife Data Collection</summary>
