@@ -7,13 +7,13 @@ import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 
 export function createIoTECS(
     scope: Construct,
-    ecsPrefix: string,
-    secretName: string,
-    secreteValue: string,
-    taskRoleName: string,
-    taskExecutionRole: iam.IRole,
-    EcrRepositoryUri: string,
-    cluster: cdk.aws_ecs.ICluster
+    ecsPrefix: string,              //GPS
+    cdkSecretID: string,             //GPSThingSecret - just a CDK construct label
+    awsSecretName: string,           //IoT/GPSThing/certs - to reference the name of the secret - to get value later
+    taskRoleName: string,           //GPSTaskRole - ???
+    taskExecutionRole: iam.IRole,   //ecsTarkExecutionRole - so ECS can perform all require needs
+    EcrRepositoryUri: string,       // EcrRepositoryUri - Uri where related image is
+    cluster: cdk.aws_ecs.ICluster   //cluster for all services
   ) {
 
     console.log(`👀 Creating ECS: ${ecsPrefix}`);
@@ -28,16 +28,19 @@ export function createIoTECS(
 
     // Retrieve the secrets for TestThing and GPSThing from AWS Secrets Manager
     
-    /// **IMPORTANT** - secret manager SPECIFIC to this string where secrets are stored.
-    // Later created in iot-stack in format of secretName: `IoT/${thingName}/certs`,  
-    // retrieved by MTTQS_SETUP.PY to publish to IoTCore
-    const iotThingSecret = secretsmanager.Secret.fromSecretNameV2(scope, secretName, secreteValue);
+    // IMPORTANT: This secret references a specific Secrets Manager entry where the device CERTIFICATES are stored.
+    // These secrets are created in LATER the IoT stack using the naming pattern: `IoT/${thingName}/certs`
+    // They are later retrieved at runtime by MTTQS_SETUP.PY to authenticate with AWS IoT Core.
+    //
+    // Example usage:
+    //   cdkSecretID     = 'GPSThingSecret'         // CDK-internal ID – can be anything
+    //   awsSecretName   = 'IoT/GPSThing/certs'     // Actual secret name in AWS Secrets Manager (must match exactly)
+    const iotThingSecret = secretsmanager.Secret.fromSecretNameV2(scope, cdkSecretID, awsSecretName);
 
     // Create a Task Role for GPS task that can access GPSThing's secret
     const IoTTaskRole = new iam.Role(scope, taskRoleName, {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'), // Allows ECS tasks to assume this role
       description: `Task role for ${ecsPrefix} task with permissions for Secrets Manager and IoT Publishing within python script`,
-
     });
 
     // Attach the pre-made AmazonSSMReadOnlyAccess managed policy to the GPS task role

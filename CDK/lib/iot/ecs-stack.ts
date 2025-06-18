@@ -10,8 +10,6 @@ import { createIoTECS } from './helpers/ecs-factory'; // Import the factory func
 
 export class EcsStack extends cdk.Stack {
   public readonly GPSEcrRepositoryUri: string;
-  public readonly TestEcrRepositoryUri: string;
-
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     
@@ -29,16 +27,21 @@ export class EcsStack extends cdk.Stack {
     const ENVEcrRepositoryUri = cdk.Fn.importValue('ENVEcrRepositoryUri');
     const HEAEcrRepositoryUri = cdk.Fn.importValue('HEAEcrRepositoryUri');
 
-    const TestEcrRepositoryUri = cdk.Fn.importValue('TestEcrRepositoryUri');
-
-    // Import the ECS task execution role created in EcrStack - required so Fargate can access
+    // Import the ECS task execution role ARN that was exported from EcrStack (you cannot retrieve role directly)
+    // This role allows Fargate tasks to pull container images, read secrets, and send logs
     const ecsTaskExecutionRoleArn = cdk.Fn.importValue('EcsTaskExecutionRoleArn');
+
+    // Reconstruct the IAM role in this stack using its ARN, so it can be assigned to ECS task definitions
     const ecsTaskExecutionRole = iam.Role.fromRoleArn(this, 'ImportedEcsTaskExecutionRole', ecsTaskExecutionRoleArn);
 
-    // Create a VPC with only 1 NAT Gateway instead of multiple
+
+    // Create a new VPC for the ECS Cluster to run in.
+    // ECS (especially with Fargate) requires a VPC with networking infrastructure to launch tasks.
+    // The VPC provides isolation, private/public subnet structure, and routing control for your containers.
+    // Even though Fargate is "serverless," it still needs to run inside a VPC with subnet and security group context.
     const vpc = new ec2.Vpc(this, 'IoTClusterVpc', {
-      maxAzs: 2,  // Spread across 2 Availability Zones
-      natGateways: 1,  // Only 1 NAT Gateway for all private subnets
+      maxAzs: 2,              // Spread across 2 Availability Zones for high availability
+      natGateways: 1,         // Use a single NAT Gateway for cost savings while still allowing outbound internet access from private subnets
     });
 
      // Create an ECS Cluster for ALL IoT Mock scripts
@@ -69,6 +72,7 @@ export class EcsStack extends cdk.Stack {
 
     // Retrieve the secrets for TestThing and GPSThing from AWS Secrets Manager
     
+    /*
     /// **IMPORTANT** - secret manager SPECIFIC to this string where secrets are stored.
     // Later created in iot-stack in format of secretName: `IoT/${thingName}/certs`,  
     // retrieved by MTTQS_SETUP.PY to publish to IoTCore
@@ -132,11 +136,18 @@ export class EcsStack extends cdk.Stack {
       desiredCount: 1, // Adjust based on how many instances you want running
       enableExecuteCommand: true, // Enable ECS Exec for debugging into the container
     });
-
+    */
     // ********************  SETUP TEST ROLES AND CONTAINERS
 
 
-
+  const GPSFargateService = createIoTECS(this, 'GPS', 'GPSThingSecret', 'IoT/GPSThing/certs', 'GPSTaskRole', 
+      ecsTaskExecutionRole, GPSEcrRepositoryUri, cluster)
+    
+    new cdk.CfnOutput(this, 'GPSFargateServiceName', {
+      value: GPSFargateService.serviceName,
+      description: 'Name of the ENV ECS Fargate Service',
+      exportName: 'GPSFargateServiceName'
+    });
 
 
 
@@ -160,11 +171,13 @@ export class EcsStack extends cdk.Stack {
     });
 
     // Output for the Task Definition and Service
+    /*
     new cdk.CfnOutput(this, 'GPSTaskDefinitionFamily', {
       value: GPSTaskDefinition.family,
       description: 'Family of the GPS ECS Task Definition',
       exportName: 'GPSTaskDefinitionFamily'
     });
+    */
 
     new cdk.CfnOutput(this, 'GPSFargateServiceName', {
       value: GPSFargateService.serviceName,

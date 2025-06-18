@@ -119,7 +119,16 @@ jobs:
       # We specify the stack name 'EcrStack'
       # We sepcified the name, so it returns just one stack at Stacks[0]
       # Each stack has outputs (defined in ecr-stack.ts) so we grab that output
-      # we get that value and store it in GITHUB_ENV - later retrieved with env.ECR_URI
+      # we get that value and store it in GPS_ECR_URI
+      #
+      # -z True if the string is EMPTY
+      # if [ -z "$GPS_ECR_URI" ]
+
+      #fi marks the end in bash
+      #
+      # Save the GPS_ECR_URI as a GitHub Actions environment variable
+      # This makes it accessible to later steps using ${{ env.GPS_ECR_URI }}
+      #GPS_ECR_URI=$GPS_ECR_URI" >> $GITHUB_ENV
       - name: Output GPS_ECR URI
         id: output-gps-ecr-uri
         run: |

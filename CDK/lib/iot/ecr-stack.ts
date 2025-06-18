@@ -6,7 +6,8 @@ import * as common from '../common';
 
 
 export class EcrStack extends cdk.Stack {
-  public readonly TestEcrRepositoryUri: string;
+
+  // Used in ECS-Stack via Fn.importValue to reference ECR repository URIs for container images
   public readonly GPSEcrRepositoryUri: string;
   public readonly EnvEcrRepositoryUri: string;
   public readonly HeaEcrRepositoryUri: string;
@@ -59,6 +60,12 @@ export class EcrStack extends cdk.Stack {
     });
 
     // Create the IAM role with AdministratorAccess
+    // Allows ECS to perform actions on container startup
+    // Pull images from ECR
+    // Fetch Secrets or config
+    // Sends logs to CloudWatch
+    // Check layer availability
+    // Use Service integrations 
     const ecsTaskExecutionRole = new iam.Role(this, 'EcsTaskExecutionRole', {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
       description: 'Role for ECS tasks with full administrative permissions',
