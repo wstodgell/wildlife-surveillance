@@ -178,12 +178,5 @@ export class EcsStack extends cdk.Stack {
       exportName: 'GPSTaskDefinitionFamily'
     });
     */
-
-    new cdk.CfnOutput(this, 'GPSFargateServiceName', {
-      value: GPSFargateService.serviceName,
-      description: 'Name of the GPS ECS Fargate Service',
-      exportName: 'GPSFargateServiceName'
-    });
-
   }
 }
