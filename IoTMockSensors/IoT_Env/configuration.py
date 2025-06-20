@@ -3,10 +3,11 @@ from colorama import Fore, Style, init
 import time
 import uuid
 
-CLIENT_ID = "GnvCollar"
-ENV_TOPIC_NAME = None
+
+CLIENT_ID = "GnvCollar" # AWS IoT Core uses this clientId to track the connection state, manage session persistence, and route messages.
+ENV_TOPIC_NAME = None  # populated from AWS Systems Manager (SSM)
 LOG_GROUP = "/docker/ENV"
-CERT_SECRET_NAME = "IoT/ENVThing/certs"
+CERT_SECRET_NAME = "IoT/ENVThing/certs" #Path to certs
 TESTING = False
 LOG_STREAM = "mqtt_connect"
 

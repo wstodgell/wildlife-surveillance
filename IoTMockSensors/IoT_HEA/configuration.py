@@ -33,21 +33,28 @@ def get_fresh_publish_interval():
         return 15  # Fallback default
 
 def create_topic(payload):
+    # Flatten float values to avoid AWS wrapping them with {"double": ...}
+    def flatten_values(value):
+        if isinstance(value, float):
+            return float(round(value, 5))  # precision cap
+        return value
+
     transformed_payload = [
         {
             "sensor_id": sensor_id,
-            "elk_id": item['elk_id'],
+            "elk_id": flatten_values(item['elk_id']),
             "timestamp": item['timestamp'],
-            "body_temperature": item['body_temperature'],
-            "heart_rate": item['heart_rate'],
-            "respiration_rate": item['respiration_rate'],
-            "activity_level": item['activity_level'],
+            "body_temperature": flatten_values(item['body_temperature']),
+            "heart_rate": flatten_values(item['heart_rate']),
+            "respiration_rate": flatten_values(item['respiration_rate']),
+            "activity_level": flatten_values(item['activity_level']),
             "posture": item['posture'],
-            "hydration_level": item['hydration_level'],
-            "stress_level": item['stress_level']
+            "hydration_level": flatten_values(item['hydration_level']),
+            "stress_level": flatten_values(item['stress_level'])
         }
         for sensor_id, item in enumerate(payload)
     ]
+
     return {
         "messageId": str(uuid.uuid4()),
         "topic": ENV_TOPIC_NAME,
