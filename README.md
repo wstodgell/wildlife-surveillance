@@ -60,6 +60,111 @@ This is a simulation project. The IoT devices, field stations, and lab clinics d
   <img src="./assets/aws_services.png" alt="AWS Services and Logical Layer" width="700"/>
 </p>
 
+<details>
+<summary>🔹 1. IoT Simulation</summary>
+
+**Reference Arch:** Simulated GPS collars, environmental sensors, and other wildlife monitoring devices.  
+**AWS Arch:** ECS, ECR, and Fargate simulate continuous IoT data generation across a device fleet.
+
+</details>
+
+<details>
+<summary>🔹 2. Field Work / Mobile App</summary>
+
+**Reference Arch:** Field workers record wildlife observations and health data through a mobile interface.  
+**AWS Arch:** AWS Amplify + React enable an offline-capable web app with secure deployment and sync features.
+
+</details>
+
+<details>
+<summary>🔹 3. Lab Clinics & BioSample Integration</summary>
+
+**Reference Arch:** Data captured in clinical settings or research facilities, synced periodically.  
+**AWS Arch:** Local PostgreSQL servers feed into AWS via Router and Direct Connect, supporting hybrid ingestion.
+
+</details>
+
+<details>
+<summary>🔹 4. Ingestion Layer</summary>
+
+**Reference Arch:** Entry point for structured and unstructured data streams from IoT, clinics, and fieldwork.  
+**AWS Arch:** IoT Core, S3 (for zipped file ingestion), and Direct Connect capture and route data into the platform.
+
+</details>
+
+<details>
+<summary>🔹 5. Operational Storage</summary>
+
+**Reference Arch:** High-speed storage for hot, unprocessed, and structured data sources.  
+**AWS Arch:** DynamoDB (fast, structured telemetry), S3 (raw files), and RDS Replication (for clinic databases).
+
+</details>
+
+<details>
+<summary>🔹 6. Data Processing & ETL Layer</summary>
+
+**Reference Arch:** First transformation stage — cleansing, enrichment, deduplication, filtering.  
+**AWS Arch:** AWS Glue handles distributed ETL jobs across storage layers.
+
+</details>
+
+<details>
+<summary>🔹 7. Metadata & Cataloging Layer</summary>
+
+**Reference Arch:** Schema tracking, discovery, lineage tracking, and downstream query optimization.  
+**AWS Arch:** AWS Glue Data Catalog defines metadata and enables Athena and Metabase to interact with the data lake.
+
+</details>
+
+<details>
+<summary>🔹 8. Query Layer / Interactive Analytics</summary>
+
+**Reference Arch:** Enables on-demand querying of large, semi-structured datasets without preprocessing.  
+**AWS Arch:** Amazon Athena executes SQL-like queries on top of S3 using Glue Data Catalog.
+
+</details>
+
+<details>
+<summary>🔹 9. Results Bucket / Query Output Storage</summary>
+
+**Reference Arch:** Stores query results from Athena for downstream visualization or export.  
+**AWS Arch:** S3 results bucket configured as the Athena query output destination.
+
+</details>
+
+<details>
+<summary>🔹 10. Data Analytics & Visualization</summary>
+
+**Reference Arch:** Reports, dashboards, charts, and field insights consumed by researchers, analysts, and decision-makers.  
+**AWS Arch:** Metabase connects to Athena, enabling interactive dashboards and cross-source visualization.
+
+</details>
+
+<details>
+<summary>🔹 11. External Data Source – Field Work</summary>
+
+**Reference Arch:** Amplify-based apps used in field environments to capture direct observations and sync later.  
+**AWS Arch:** Amplify/React app uploads data to S3 or API Gateway → Lambda pipeline when online.
+
+</details>
+
+<details>
+<summary>🔹 12. External Data Source – Lab Integration</summary>
+
+**Reference Arch:** Sample metadata and test results are digitized and uploaded from laboratory tools.  
+**AWS Arch:** PostgreSQL server uploads data via router → Direct Connect → RDS replication.
+
+</details>
+
+<details>
+<summary>🔹 13. Security, Monitoring & Identity (Cross-Cutting Layer)</summary>
+
+**Reference Arch:** System-wide enforcement of security, access control, and observability.  
+**AWS Arch:** Secrets Manager (credentials), IAM (role-based access), CloudWatch (monitoring), and Amazon Cognito (authentication).
+
+</details>
+
+
 ## 1 IoT Device Simulation Architecture ##
 
 <p align="center">
