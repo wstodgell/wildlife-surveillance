@@ -42,6 +42,9 @@ export class DataAnalyticsStack extends Stack {
             {
               path: `s3://${s3JSONBucket.bucketName}/env_data/`, // Point to the env_data folder where JSON files are located
             },
+             {
+              path: `s3://${s3JSONBucket.bucketName}/hea_data/`, // Point to the env_data folder where JSON files are located
+            },
           ],
         },
         name: 'S3ResultsCrawler',
