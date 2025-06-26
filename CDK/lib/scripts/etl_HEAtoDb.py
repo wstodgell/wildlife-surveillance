@@ -40,11 +40,12 @@ df_clean = df.select(
     col("Posture").cast(StringType()),
     col("HeartRate").cast(IntegerType()),
     col("RespirationRate").cast(IntegerType()),
-    col("BodyTemperature.double").cast(DoubleType()).alias("BodyTemperature"),  # <- this is STILL needed
+    col("BodyTemperature.double").cast(DoubleType()).alias("BodyTemperature"),
     col("HydrationLevel.double").cast(DoubleType()).alias("HydrationLevel"),
-    col("ActivityLevel").cast(DoubleType()).alias("ActivityLevel"),  # now a flat field
+    col("ActivityLevel.double").cast(DoubleType()).alias("ActivityLevel"),  # ← FIXED
     col("StressLevel.double").cast(DoubleType()).alias("StressLevel")
 )
+
 
 # Write cleaned data to S3 as compact JSON
 df_clean.coalesce(1).write.mode('overwrite').json(args['s3_output_path'])
