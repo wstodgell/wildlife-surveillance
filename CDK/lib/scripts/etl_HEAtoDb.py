@@ -3,7 +3,7 @@ from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, when
 from pyspark.sql.types import DoubleType, IntegerType, StringType
 
 # Glue’s insane parameter dance — because it refuses to just take config like a normal job
@@ -29,11 +29,9 @@ dynamo_frame = glueContext.create_dynamic_frame.from_options(
 # Convert Glue's bizarro DynamicFrame into a normal Spark DataFrame so you can actually work with it
 df = dynamo_frame.toDF()
 
-
 # 🔥 THIS is where the pain starts:
-# DynamoDB stores nested JSON inside attributes like { "double": 38.5 }, so you must manually reach into each field.
-# Glue won't flatten it for you. You have to `.select()` and `.cast()` like a surgeon.
-# If you skip this, you'll get ANALYSIS EXCEPTION errors from Athena or Glue.
+# DynamoDB *sometimes* stores nested JSON like { "double": 38.5 }, but *sometimes* it's just a flat number.
+# We’ll check the type using `getField()` to avoid casting directly from struct to double and triggering Athena rage.
 df_clean = df.select(
     col("SensorId").cast(StringType()),
     col("ElkId").cast(StringType()),
@@ -42,9 +40,9 @@ df_clean = df.select(
     col("Posture").cast(StringType()),
     col("HeartRate").cast(IntegerType()),
     col("RespirationRate").cast(IntegerType()),
-    col("BodyTemperature.double").cast(DoubleType()).alias("BodyTemperature"),
+    col("BodyTemperature.double").cast(DoubleType()).alias("BodyTemperature"),  # <- this is STILL needed
     col("HydrationLevel.double").cast(DoubleType()).alias("HydrationLevel"),
-    col("ActivityLevel.double").cast(DoubleType()).alias("ActivityLevel"),
+    col("ActivityLevel").cast(DoubleType()).alias("ActivityLevel"),  # now a flat field
     col("StressLevel.double").cast(DoubleType()).alias("StressLevel")
 )
 
