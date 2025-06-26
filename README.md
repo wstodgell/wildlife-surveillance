@@ -50,7 +50,7 @@ This reference architecture presents a real-world context in which multiple inde
 - Lab clinics operating near potential outbreak zones collect opt-in health data from donors. These clinics already manage biosample digitization and local data storage but require secure onboarding into a unified system for integrated analysis alongside wildlife data.
 </details>
 
-# Data Analytics & Visualization Using MetaBase
+# Data Analytics & Visualization Using MetaBase (Examples)
 
 ## Wildlife Health Insights Dashboard
 
