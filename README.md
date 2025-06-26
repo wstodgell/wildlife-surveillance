@@ -18,8 +18,6 @@ Everything in this project is fictional but grounded in real-world architecture 
 
 **Wildlife Health Surveillance (WHS) Program**, is a fictional program dedicated to monitoring and detecting pathogens affecting wildlife populations, which can potentially spill over to humans, posing a significant public health risk. To facilitate this work, the WHS Program requires a robust and scalable IT solution for the genomic analysis of wildlife samples, storage of genomic sequence data, and sharing of results with various stakeholders, including wildlife health organizations, research institutions, and public health agencies.
 
-There are 
-
 ## 📐 Reference Architecture and Overview
 
 <p align="center">
@@ -51,6 +49,32 @@ This reference architecture presents a real-world context in which multiple inde
 
 - Lab clinics operating near potential outbreak zones collect opt-in health data from donors. These clinics already manage biosample digitization and local data storage but require secure onboarding into a unified system for integrated analysis alongside wildlife data.
 </details>
+
+# Data Analytics & Visualization Using MetaBase
+
+## Wildlife Health Insights Dashboard
+
+This Metabase dashboard provides a live overview of environmental and physiological data collected from wildlife via IoT sensors. The goal is to correlate GPS-tracked movement data with biometric health metrics to assess environmental stressors and animal activity.
+
+**Key Features:**
+- **Environmental Map** showing static sensor locations  
+- **GPS Trail Map** visualizing animal movement paths  
+- **Refined GPS Table** with timestamped coordinate data  
+- **Activity Level Bar Chart** displaying average activity per sensor  
+
+These tools support spatial and temporal analysis of wildlife health data, enabling researchers and biologists to track changes in animal behavior in near real-time.
+
+<p align="center">
+  <img src="./assets/MetaBase_1.png" alt="Reference Architecture Diagram" width="700"/>
+</p>
+
+## Camera Trap Data + Collar Data
+
+This visualization demonstrates the fusion of camera trap imagery with IoT-derived biometric data from a GPS collar sensor. By combining visual evidence of animal presence with real-time physiological metrics, researchers can gain a more comprehensive understanding of the animal’s health, behavior, and environmental conditions at the time of capture.
+
+<p align="center">
+  <img src="./assets/Elk_Camera_HEA.png" alt="AWS Services and Logical Layer" width="700"/>
+</p>
 
 # 🧪 Simulation setup, design, AWS Services and implementation
 
