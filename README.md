@@ -294,24 +294,49 @@ This solution is split across modular stacks:
 
 ## 📁 Repo Structure
 
+## 📁 Project Structure
+
 ```bash
+.
 ├── lib/
 │   ├── iot/
-│   │   ├── ecr-stack.ts
-│   │   ├── ecs-stack.ts
-│   │   ├── iot-stack.ts
-│   │   └── helpers/
-│   │       ├── ecs-factory.ts
-│   │       └── iot-factory.ts
-│   └── platform/
-│       ├── data-ingestion-stack.ts
-│       ├── data-analytics-stack.ts
-│       ├── auth-stack.ts
-│       └── amplify-stack.ts
+│   │   ├── ecr-stack.ts                 # ECR repo for containerized IoT processing
+│   │   ├── ecs-stack.ts                 # ECS Fargate service definitions
+│   │   ├── iot-stack.ts                 # IoT Core and rule definitions
+│   │   ├── helpers/
+│   │   │   ├── ecs-factory.ts           # Utility to provision ECS clusters
+│   │   │   ├── iot-factory.ts           # Utility to create IoT policies & things
+│   ├── lambda/
+│   │   └── create-certificates/
+│   │       └── index.js                 # Lambda to auto-generate IoT certs
+│   │   ├── ENVTopicProcessor.py        # Processes environmental sensor data
+│   │   ├── GPSTopicProcessor.py        # Processes GPS data
+│   │   ├── GPSTopicProcessor-TestCode.py # Test harness for GPS lambda
+│   │   ├── HEATopicProcessor.py        # Processes biometric vitals data
+│   ├── platform/
+│   │   ├── amplify-stack.ts            # Deploys Amplify hosting for frontend
+│   │   ├── auth-stack.ts               # Cognito user pools & identity setup
+│   │   ├── clinic-ingestion-stack.ts   # Handles data ingestion from clinics
+│   │   ├── data-ingestion-stack.ts     # General ingestion stack for IoT pipelines
+│   │   ├── data-analytics-stack.ts     # Glue + Athena + Data Catalog stack
+│   │   ├── etl-orchestration-stack.ts  # ETL coordination using Step Functions (if used)
+│   │   ├── file-gateway-stack.ts       # File upload & access via API Gateway
+│   │   ├── helpers/
+│   │   │   ├── check-glue.ts            # Validates Glue resources
+│   │   │   └── glue-job-factory.ts      # Creates and configures Glue jobs
+│   │   ├── iot-create-rule.ts          # Utility to define IoT Core rules
+│   │   ├── lambdas/                    # Folder for platform-specific lambdas
+│   │   └── names.ts                    # Central file for resource naming conventions
+├── scripts/
+│   ├── etl_ENVtoDb.py                  # Script to transform ENV sensor data to DB
+│   ├── etl_GPStoDb.py                  # Script to transform GPS data to DB
+│   ├── etl_HEAtoDb.py                  # Script to transform HEA biometric data to DB
+│   └── common.ts                       # Shared logic across scripts
 ├── bin/
-│   └── cdk.ts
+│   └── cdk.ts                          # CDK entrypoint
 ├── README.md
-└── cdk.json
+└── cdk.json                            # CDK configuration
+
 ```
 
 ---
