@@ -1,5 +1,13 @@
 ## 🚨 Portfolio Scenario: Responding to a Wildlife-Origin Virus Outbreak
 
+Teaches the full lifecycle: From policy justification → funding → architecture → implementation → measurement.
+
+Models real-world government tensions: Decentralized funding, disconnected systems, compliance demands, urgency from a crisis.
+
+Leverages realistic tech stack: CDK, Fargate, IoT Core, Glue, Athena, Metabase = perfect AWS choices for gov-scale problems.
+
+Shows how digital transformation happens: This story could easily be adapted for water quality, air pollution, wildfire telemetry, etc.
+
 This project is a **portfolio simulation**, designed to showcase how I would architect and implement a scalable, secure, AWS cloud-native solution in response to a **wildlife-origin virus outbreak** with potential human spillover.
 
 It demonstrates my experience in:
@@ -369,7 +377,10 @@ This solution is split across modular stacks:
 
 ## 📎 Resources
 
-- [📘 Design Doc (PDF)](link-to-pdf)
+- [📘 Design Doc (PDF)](link-to-pdf) - Justifies funding and urgency, outlinese current fragmentation and proposed a digital platform
+- [📘 Solution Architecture (PDF)](link-to-pdf) - Technical plan for how to implement WATCHHub using AWS cloud-native services.
+- [📘 Implementation Roadmap (PDF)](link-to-pdf) - Shows phases (PoC → MVP → Full Deployment), teams, KPIs.
+- [📘 Final Report (PDF)](link-to-pdf) - Used for simulation closure: lessons learned, adoption success, system demo, sustainability analysis.
 - [📖 Blog: Deploying IoT Genomics with AWS CDK](your-blog-link)
 - [📊 Live Demo (if applicable)](link)
 
