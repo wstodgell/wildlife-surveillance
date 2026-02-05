@@ -377,7 +377,7 @@ This solution is split across modular stacks:
 
 ## 📎 Resources
 
-- [📘 Design Doc (PDF)](link-to-pdf) - Justifies funding and urgency, outlinese current fragmentation and proposed a digital platform
+- [📘 Business Case (PDF)](https://github.com/wstodgell/wildlife-surveillance/blob/master/documentation/WL_Business%20Case.pdf) - Justifies reason, funding and urgency, outlinese current fragmentation and proposed digital platform
 - [📘 Solution Architecture (PDF)](link-to-pdf) - Technical plan for how to implement WATCHHub using AWS cloud-native services.
 - [📘 Implementation Roadmap (PDF)](link-to-pdf) - Shows phases (PoC → MVP → Full Deployment), teams, KPIs.
 - [📘 Final Report (PDF)](link-to-pdf) - Used for simulation closure: lessons learned, adoption success, system demo, sustainability analysis.
