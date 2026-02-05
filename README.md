@@ -378,11 +378,11 @@ This solution is split across modular stacks:
 ## 📎 Resources
 
 - [📘 Business Case (PDF)](https://github.com/wstodgell/wildlife-surveillance/blob/master/documentation/WL_Business%20Case.pdf) - Justifies reason, funding and urgency, outlinese current fragmentation and proposed digital platform
-- [📘 Solution Architecture (PDF)](link-to-pdf) - Technical plan for how to implement WATCHHub using AWS cloud-native services.
-- [📘 Implementation Roadmap (PDF)](link-to-pdf) - Shows phases (PoC → MVP → Full Deployment), teams, KPIs.
-- [📘 Final Report (PDF)](link-to-pdf) - Used for simulation closure: lessons learned, adoption success, system demo, sustainability analysis.
-- [📖 Blog: Deploying IoT Genomics with AWS CDK](your-blog-link)
-- [📊 Live Demo (if applicable)](link)
+- [📘 Solution Architecture (PDF)](https://github.com/wstodgell/wildlife-surveillance/blob/master/documentation/WL_CloudSolution.pdf) - Technical plan for how to implement WATCHHub using AWS cloud-native services.
+- [📘 Implementation Roadmap (PDF) - WIP](link-to-pdf) - Shows phases (PoC → MVP → Full Deployment), teams, KPIs.
+- [📘 Final Report (PDF) - WIP](link-to-pdf) - Used for simulation closure: lessons learned, adoption success, system demo, sustainability analysis.
+- [📖 Blog: Deploying IoT Genomics with AWS CDK WIP](your-blog-link)
+- [📊 Live Demo (if applicable) - WIP](link)
 
 ---
 
